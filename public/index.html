@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapping Healthcare Acquired Infections</title>
+    <!-- Import D3.js library for data visualization -->
+    <script src="https://d3js.org/d3.v7.min.js" charset="utf-8"></script>
+    <!-- Import Simple Statistics library for calculations -->
+    <script src="https://cdn.jsdelivr.net/npm/simple-statistics@7.7.2"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+    
+        h1 {
+            text-align: center;
+            color: #343a40;
+            margin: 20px 0;
+        }
+    
+        select, button {
+            display: block;
+            margin: 10px auto;
+            padding: 8px 16px;
+            font-size: 16px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    
+        select:hover, button:hover {
+            background-color: #e9ecef;
+            cursor: pointer;
+        }
+
+        .dropdown-container {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.dropdown-input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.dropdown-select {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+    
+        #map {
+        width: 80%;
+        height: 600px;
+        margin: 0px auto; /* Centers the map horizontally */
+        border: 2px solid #ced4da;
+        border-radius: 5px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+        display: block; /* Ensures the map is treated as a block element */
+        }
+    
+        .tooltip {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 1px solid #333;
+            border-radius: 5px;
+            padding: 10px;
+            pointer-events: none;
+            font-size: 14px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+    
+        button#resetButton {
+            width: 200px;
+        }
+    
+        #tooltip {
+            font-family: Arial, sans-serif;
+        }
+
+        #exportModal select {
+    display: block; /* Ensure dropdowns are not hidden */
+    width: 100%;    /* Make them responsive */
+}
+
+    </style>
+    
+</head>
+<body>
+    <h1>Hospital-Acquired Infection Rates by State</h1>
+    <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin: 20px 0;">
+        <select id="filter">
+            <option value="all">All Infection Types</option>
+        </select>
+        <!-- Add an Export button -->
+<div style="display: flex; justify-content: center; margin: 20px;">
+    <button id="exportButton">Export Data</button>
+</div>
+
+<!-- Modal for export filters -->
+<div id="exportModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 300px; background: white; border: 1px solid #ccc; border-radius: 10px; padding: 20px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+    <h3 style="text-align: center;">Export Filters</h3>
+
+<!-- State Dropdown -->
+<label for="stateSelect">State:</label>
+<div class="dropdown-container">
+    <input type="text" id="stateInput" placeholder="Type to search..." class="dropdown-input" />
+    <select id="stateSelect" size="5" class="dropdown-select"></select>
+</div>
+
+<!-- Hospital Dropdown -->
+<label for="hospitalSelect">Hospital:</label>
+<div class="dropdown-container">
+    <input type="text" id="hospitalInput" placeholder="Type to search..." class="dropdown-input" />
+    <select id="hospitalSelect" size="5" class="dropdown-select"></select>
+</div>
+
+<!-- Infection Dropdown -->
+<label for="infectionSelect">Infection Type:</label>
+<div class="dropdown-container">
+    <input type="text" id="infectionInput" placeholder="Type to search..." class="dropdown-input" />
+    <select id="infectionSelect" size="5" class="dropdown-select"></select>
+</div>
+
+
+    <div style="text-align: center;">
+        <button id="exportCsvButton" style="margin-right: 10px;">Export</button>
+        <button id="closeModalButton">Cancel</button>
+    </div>
+</div>
+
+
+        <button id="resetButton">Reset View</button>
+    </div>
+    
+    <div id="map" ></div>
+    <div class="tooltip" id="tooltip"></div>
+    <script src="new.js"></script>  
+</body>
+</html>
